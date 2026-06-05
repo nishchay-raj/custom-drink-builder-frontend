@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-background: #FAFAF8;
+  --color-foreground: #1A1A18;
+  --color-card: #FAFAF8;
+  --color-card-foreground: #1A1A18;
+  --color-popover: #FAFAF8;
+  --color-popover-foreground: #1A1A18;
+  --color-primary: #1A1A18;
+  --color-primary-foreground: #FAFAF8;
+  --color-secondary: #F2F0EB;
+  --color-secondary-foreground: #1A1A18;
+  --color-muted: #F2F0EB;
+  --color-muted-foreground: #6B6860;
+  --color-accent: #C8A96E;
+  --color-accent-foreground: #fff;
+  --color-destructive: #C0392B;
+  --color-destructive-foreground: #fff;
+  --color-border: rgba(26, 26, 24, 0.1);
+  --color-input: #FAFAF8;
+  --color-ring: #C8A96E;
+  --color-chart-1: #C8A96E;
+  --color-chart-2: #2D6A4F;
+  --color-chart-3: #B7791F;
+  --color-chart-4: #1A5F9E;
+  --color-chart-5: #8B6F3E;
+  --color-sidebar: #FAFAF8;
+  --color-sidebar-foreground: #1A1A18;
+  --color-sidebar-primary: #1A1A18;
+  --color-sidebar-primary-foreground: #FAFAF8;
+  --color-sidebar-accent: #C8A96E;
+  --color-sidebar-accent-foreground: #fff;
+  --color-sidebar-border: rgba(26, 26, 24, 0.1);
+  --color-sidebar-ring: #C8A96E;
+  --radius-base: 0.625rem;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  
+  html {
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}

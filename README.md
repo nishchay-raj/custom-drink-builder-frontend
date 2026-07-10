@@ -1,10 +1,10 @@
-# 🍹 Custom Drink Builder - Frontend
+# Custom Drink Builder - Frontend
 
 Frontend application for the Custom Drink Builder platform, allowing customers to create personalized drinks through an interactive and responsive interface.
 
 ## Backend Repository
 
-https://github.com/<your-username>/custom-drink-builder-backend
+https://github.com/nishchay-raj/custom-drink-builder-backend
 
 ## Features
 

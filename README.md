@@ -25,6 +25,6 @@ https://github.com/nishchay-raj/custom-drink-builder-backend
 ## Getting Started
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```

@@ -4,6 +4,33 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
+type UserRole = 'customer' | 'waiter' | 'kitchen' | 'manager';
+
+const normalizeRole = (role: string | null | undefined): UserRole => {
+    const value = role?.trim().toLowerCase();
+
+    if (value === 'manager' || value === 'admin') return 'manager';
+    if (value === 'waiter' || value === 'server' || value === 'staff') return 'waiter';
+    if (value === 'kitchen' || value === 'chef' || value === 'cook') return 'kitchen';
+    return 'customer';
+};
+
+const resolveRole = (data: unknown): UserRole => {
+    const candidates = [
+        (data as { role?: string } | null)?.role,
+        (data as { userRole?: string } | null)?.userRole,
+        (data as { type?: string } | null)?.type,
+        (data as { user?: { role?: string } } | null)?.user?.role,
+        (data as { user?: { userRole?: string } } | null)?.user?.userRole,
+        (data as { user?: { type?: string } } | null)?.user?.type,
+        (data as { data?: { role?: string } } | null)?.data?.role,
+        (data as { data?: { userRole?: string } } | null)?.data?.userRole,
+        (data as { data?: { type?: string } } | null)?.data?.type,
+    ];
+
+    return normalizeRole(candidates.find((value): value is string => Boolean(value)));
+};
+
 export default function Login(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,15 +49,18 @@ export default function Login(){
                 throw new Error(res.statusText || 'Login failed');
             }
 
-                        // on success, set a client-side flag and navigate
-                        setLoading(false);
-                        try {
-                            localStorage.setItem('isLoggedIn', 'true');
-                        } catch (e) {
-                            // ignore if storage not available
-                        }
+            const userRole = resolveRole(res.data);
 
-                        router.push('/');
+            // on success, set a client-side flag and navigate
+            setLoading(false);
+            try {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userRole', userRole);
+            } catch (e) {
+                // ignore if storage not available
+            }
+
+            router.push('/');
         } catch (err: any) {
             setLoading(false);
             setError(err?.message || 'An error occurred');

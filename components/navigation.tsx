@@ -11,45 +11,41 @@ import {
 
 import { Button } from '@/components/ui/button';
 
+type UserRole = 'customer' | 'waiter' | 'kitchen' | 'manager';
+
 interface NavigationProps {
-  currentView: 'customer' | 'waiter' | 'kitchen' | 'manager';
+  currentView: UserRole;
   onViewChange: (
-    view: 'customer' | 'waiter' | 'kitchen' | 'manager'
+    view: UserRole
   ) => void;
   onLoginClick: () => void;
+  onLogoutClick: () => void;
+  isLoggedIn: boolean;
+  userRole: UserRole;
 }
 
 export default function Navigation({
   currentView,
   onViewChange,
   onLoginClick,
+  onLogoutClick,
+  isLoggedIn,
+  userRole,
 }: NavigationProps) {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-
-  React.useEffect(() => {
-    try {
-      setIsLoggedIn(Boolean(localStorage.getItem('isLoggedIn')));
-    } catch (e) {
-      setIsLoggedIn(false);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    try {
-      localStorage.removeItem('isLoggedIn');
-    } catch (e) {
-      // ignore
-    }
-
-    // reload or navigate to refresh UI
-    window.location.reload();
-  };
-  const navItems = [
+  const navItems: Array<{ id: UserRole; label: string; icon: React.ComponentType<{ size?: number }> }> = [
     { id: 'customer', label: 'Customer', icon: ShoppingCart },
     { id: 'waiter', label: 'Waiter', icon: Users },
     { id: 'kitchen', label: 'Kitchen', icon: ChefHat },
     { id: 'manager', label: 'Manager', icon: BarChart3 },
   ];
+
+  const visibleNavItem = navItems.find((item) =>
+    isLoggedIn ? item.id === userRole : item.id === 'customer'
+  ) ?? navItems[0];
+
+  const handleLogout = () => {
+    onLogoutClick();
+  };
 
   return (
     <div className="flex flex-col gap-3 border-b border-border bg-background px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6 flex-shrink-0">
@@ -66,14 +62,14 @@ export default function Navigation({
 
         {/* Nav Items */}
         <div className="flex min-w-0 items-stretch gap-1 overflow-x-auto pb-1 sm:pb-0">
-          {navItems.map((item) => {
+          {[visibleNavItem].map((item) => {
             const isActive = currentView === item.id;
             const Icon = item.icon;
 
             return (
               <button
                 key={item.id}
-                onClick={() => onViewChange(item.id as any)}
+                onClick={() => onViewChange(item.id)}
                 className={`
                   shrink-0 px-4 py-3 text-sm font-normal border-b-2 flex items-center gap-2 whitespace-nowrap rounded-t-lg
                   transition-all duration-200
